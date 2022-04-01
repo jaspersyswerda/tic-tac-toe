@@ -8,9 +8,28 @@ public class TTT {
 
     public static void main(String[] args) {
         TTT ttt = new TTT();
-        Scanner scanner = new Scanner(System.in);
+
         ttt.makeBoard();
-        ttt.playerTurn(scanner);
+        ttt.play();
+    }
+
+    private void play() {
+        System.out.println("Welcome to Tic-Tac-Toe");
+        System.out.println("X will play first");
+        printBoard();
+        Scanner scanner = new Scanner(System.in);
+        boolean gameEnded = false;
+        while (!gameEnded){
+            playerTurn(scanner);
+            gameEnded = checkGameEnded();
+            printBoard();
+            computerTurn();
+            gameEnded = checkGameEnded();
+            printBoard();
+        }
+    }
+
+    private void computerTurn() {
     }
 
     private void makeBoard() {
@@ -20,10 +39,6 @@ public class TTT {
     }
 
     private void playerTurn(Scanner scanner) {
-
-        System.out.println("Welcome to Tic-Tac-Toe");
-        System.out.println("X will play first");
-        printBoard();
         boolean validMove = false;
         while (!validMove){
             System.out.println("What is your move?");
@@ -57,5 +72,9 @@ public class TTT {
         }
         System.out.print("|");
         System.out.println();
+    }
+
+    private boolean checkGameEnded() {
+        return false;
     }
 }
