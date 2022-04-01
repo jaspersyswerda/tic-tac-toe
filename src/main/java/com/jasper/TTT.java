@@ -1,5 +1,6 @@
 package com.jasper;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class TTT {
@@ -8,14 +9,13 @@ public class TTT {
 
     public static void main(String[] args) {
         TTT ttt = new TTT();
-
         ttt.makeBoard();
         ttt.play();
     }
 
     private void play() {
-        System.out.println("Welcome to Tic-Tac-Toe");
-        System.out.println("X will play first");
+        System.out.println("Welcome to Tic-Tac-Toe!");
+        System.out.println("X will play first.");
         printBoard();
         Scanner scanner = new Scanner(System.in);
         boolean gameEnded = false;
@@ -27,30 +27,38 @@ public class TTT {
             gameEnded = checkGameEnded();
             printBoard();
         }
+        scanner.close();
     }
 
     private void computerTurn() {
+        while (true){
+            Random rand = new Random();
+            int move = rand.nextInt(9);
+            if (validMove(move)){
+                board[move-1] = "O";
+                break;
+            }
+        }
     }
 
     private void makeBoard() {
-        for (int i = 1;i<=9;i++){
-            board[i-1] = String.valueOf(i);
+        for (int i = 0;i<9;i++){
+            board[i] = String.valueOf(i+1);
         }
     }
 
     private void playerTurn(Scanner scanner) {
-        boolean validMove = false;
-        while (!validMove){
-            System.out.println("What is your move?");
-
+        while (true){
+            System.out.println("What is your move? 1-9");
             int move = scanner.nextInt();
-            validMove = checkMove(move);
-            board[move-1] = "X";
+            if (validMove(move)){
+                board[move-1] = "X";
+                break;
+            }
         }
-        printBoard();
     }
 
-    private boolean checkMove(int move) {
+    private boolean validMove(int move) {
         return move >= 1 && move <= 9 &&
          board[move-1] != "X" && board[move-1] != "O";
     }
@@ -71,6 +79,7 @@ public class TTT {
             }
         }
         System.out.print("|");
+        System.out.println();
         System.out.println();
     }
 
