@@ -13,54 +13,10 @@ public class TTT {
         ttt.play();
     }
 
-    private void play() {
-        System.out.println("Welcome to Tic-Tac-Toe!");
-        System.out.println("X will play first.");
-        printBoard();
-        Scanner scanner = new Scanner(System.in);
-        boolean gameEnded = false;
-        while (!gameEnded){
-            playerTurn(scanner);
-            gameEnded = checkGameEnded();
-            printBoard();
-            computerTurn();
-            gameEnded = checkGameEnded();
-            printBoard();
-        }
-        scanner.close();
-    }
-
-    private void computerTurn() {
-        while (true){
-            Random rand = new Random();
-            int move = rand.nextInt(9);
-            if (validMove(move)){
-                board[move-1] = "O";
-                break;
-            }
-        }
-    }
-
     private void makeBoard() {
         for (int i = 0;i<9;i++){
             board[i] = String.valueOf(i+1);
         }
-    }
-
-    private void playerTurn(Scanner scanner) {
-        while (true){
-            System.out.println("What is your move? 1-9");
-            int move = scanner.nextInt();
-            if (validMove(move)){
-                board[move-1] = "X";
-                break;
-            }
-        }
-    }
-
-    private boolean validMove(int move) {
-        return move >= 1 && move <= 9 &&
-         board[move-1] != "X" && board[move-1] != "O";
     }
 
     //PrintBoard
@@ -83,7 +39,48 @@ public class TTT {
         System.out.println();
     }
 
+    private void play() {
+        System.out.println("Welcome to Tic-Tac-Toe!");
+        System.out.println("X will play first.");
+        printBoard();
+        Scanner scanner = new Scanner(System.in);
+        boolean gameEnded = false;
+        while (!gameEnded){
+            playerTurn(scanner);
+            gameEnded = checkGameEnded();
+            printBoard();
+            computerTurn();
+            gameEnded = checkGameEnded();
+            printBoard();
+        }
+        scanner.close();
+    }
+
+    private void playerTurn(Scanner scanner) {
+        int move;
+        do {
+            System.out.println("What is your move? 1-9");
+            move = scanner.nextInt();
+        } while (!validMove(move));
+        board[move-1] = "X";
+    }
+
+    private void computerTurn() {
+        int move;
+        do {
+            Random rand = new Random();
+            move = rand.nextInt(9);
+        } while (!validMove(move));
+        board[move-1] = "O";
+    }
+
+    private boolean validMove(int move) {
+        return move >= 1 && move <= 9 &&
+         board[move-1] != "X" && board[move-1] != "O";
+    }
+
     private boolean checkGameEnded() {
+        //TODO: implement
         return false;
     }
 }
