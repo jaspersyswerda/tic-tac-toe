@@ -50,13 +50,13 @@ public class TTT {
             playerTurn(humanPlayer, scanner);
             printBoard();
             if (checkGameEnded()){
-                System.out.println("Player won!");
+                if (!boardFull()) System.out.println("Player won!");
                 break;
             }
             playerTurn(computer, scanner);
             printBoard();
             if (checkGameEnded()){
-                System.out.println("Computer won!");
+                if (!boardFull()) System.out.println("Computer won!");
                 break;
             }
         }
@@ -65,8 +65,11 @@ public class TTT {
 
     private void playerTurn(Player player, Scanner scanner) {
         try{
-            int move;
+            Integer move = null;
             do {
+                if (move != null){
+                    System.out.println("That is not a valid number. Try again please.");
+                }
                 if (player.isHumanPlayer()){
                     System.out.println("What is your move? [1-9]");
                     move = Integer.parseInt(scanner.next());
@@ -86,16 +89,15 @@ public class TTT {
             System.out.println("That is not a valid number. Try again please.");
             playerTurn(player, scanner);
         }
-
     }
 
     private boolean validMove(int move) {
         return move >= 1 && move <= 9 &&
-         board[move-1] != "X" && board[move-1] != "O";
+         !"X".equals(board[move-1]) && !"O".equals(board[move-1]);
     }
 
     private boolean checkGameEnded() {
-        return winnerHorizontally() || winnerVertically() || winnerDiagonally() || boardFull();
+        return boardFull() || winnerHorizontally() || winnerVertically() || winnerDiagonally();
     }
 
     private boolean winnerHorizontally() {
@@ -117,7 +119,7 @@ public class TTT {
 
     private boolean boardFull(){
         for (String sign : board){
-            if (sign != "X" && sign != "O"){
+            if (!"X".equals(sign) && !"O".equals(sign)){
                 return false;
             }
         }
