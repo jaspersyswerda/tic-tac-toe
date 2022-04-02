@@ -41,37 +41,52 @@ public class TTT {
 
     private void play() {
         System.out.println("Welcome to Tic-Tac-Toe!");
-        System.out.println("X will play first.");
+        Player humanPlayer = new Player(true,"X");
+        Player computer = new Player(false, "O");
         printBoard();
+        System.out.printf("%s will play first.%n", humanPlayer.getMark());
         Scanner scanner = new Scanner(System.in);
-        boolean gameEnded = false;
-        while (!gameEnded){
-            playerTurn(scanner);
-            gameEnded = checkGameEnded();
+        while (true){
+            playerTurn(humanPlayer, scanner);
             printBoard();
-            computerTurn();
-            gameEnded = checkGameEnded();
+            if (checkGameEnded()){
+                System.out.println("Player won!");
+                break;
+            }
+            playerTurn(computer, scanner);
             printBoard();
+            if (checkGameEnded()){
+                System.out.println("Computer won!");
+                break;
+            }
         }
         scanner.close();
     }
 
-    private void playerTurn(Scanner scanner) {
-        int move;
-        do {
-            System.out.println("What is your move? 1-9");
-            move = scanner.nextInt();
-        } while (!validMove(move));
-        board[move-1] = "X";
-    }
+    private void playerTurn(Player player, Scanner scanner) {
+        try{
+            int move;
+            do {
+                if (player.isHumanPlayer()){
+                    System.out.println("What is your move? [1-9]");
+                    move = Integer.parseInt(scanner.next());
+                }
+                else {
+                    Random rand = new Random();
+                    move = rand.nextInt(9);
+                }
+            } while (!validMove(move));
+            if (player.isHumanPlayer()) {
+                System.out.printf("Player move is %d.%n", move);
+            } else {
+                System.out.printf("Computer move is %d.%n", move);
+            }
+            board[move-1] = player.getMark();
+        } catch (NumberFormatException nfe){
+            System.out.println("That is not a valid number. Try again please.");
+            playerTurn(player, scanner);
+        }
 
-    private void computerTurn() {
-        int move;
-        do {
-            Random rand = new Random();
-            move = rand.nextInt(9);
-        } while (!validMove(move));
-        board[move-1] = "O";
     }
 
     private boolean validMove(int move) {
@@ -80,7 +95,33 @@ public class TTT {
     }
 
     private boolean checkGameEnded() {
-        //TODO: implement
-        return false;
+        return winnerHorizontally() || winnerVertically() || winnerDiagonally() || boardFull();
+    }
+
+    private boolean winnerHorizontally() {
+        return (board[0].equals(board[1]) && board[1].equals(board[2])) ||
+                (board[3].equals(board[4]) && board[4].equals(board[5])) ||
+                (board[6].equals(board[7]) && board[7].equals(board[8]));
+    }
+
+    private boolean winnerVertically() {
+        return (board[0].equals(board[3]) && board[3].equals(board[6])) ||
+                (board[1].equals(board[4]) && board[4].equals(board[7])) ||
+                (board[2].equals(board[5]) && board[5].equals(board[8]));
+    }
+
+    private boolean winnerDiagonally(){
+        return (board[0].equals(board[4]) && board[4].equals(board[8])) ||
+                (board[2].equals(board[4]) && board[4].equals(board[6]));
+    }
+
+    private boolean boardFull(){
+        for (String sign : board){
+            if (sign != "X" && sign != "O"){
+                return false;
+            }
+        }
+        System.out.println("Board full, game tied!");
+        return true;
     }
 }
