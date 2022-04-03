@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class TTT {
 
-    String[] board = new String[9];
+   private String[] board = new String[9];
 
     public static void main(String[] args) {
         TTT ttt = new TTT();
@@ -13,7 +13,7 @@ public class TTT {
         ttt.play();
     }
 
-    private void makeBoard() {
+    protected void makeBoard() {
         for (int i = 0;i<9;i++){
             board[i] = String.valueOf(i+1);
         }
@@ -38,7 +38,7 @@ public class TTT {
         System.out.println();
     }
 
-    private void play() {
+    protected void play() {
         System.out.println("Welcome to Tic-Tac-Toe!");
         Player humanPlayer = new Player(true,"X");
         Player computer = new Player(false, "O");
@@ -123,5 +123,9 @@ public class TTT {
         }
         System.out.println("Board full, game tied!");
         return true;
+    }
+
+    public String[] getBoard() {
+        return board;
     }
 }
