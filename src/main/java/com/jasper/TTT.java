@@ -23,7 +23,6 @@ public class TTT {
     // | 1 | 2 | 3 |
     // | 4 | 5 | 6 |
     // | 7 | 8 | 9 |
-
     private void printBoard() {
 
         for (int i = 0;i<9;i++){
@@ -49,16 +48,10 @@ public class TTT {
         while (true){
             playerTurn(humanPlayer, scanner);
             printBoard();
-            if (checkGameEnded()){
-                if (!boardFull()) System.out.println("Player won!");
-                break;
-            }
+            if (checkGameEnded(humanPlayer)) break;
             playerTurn(computer, scanner);
             printBoard();
-            if (checkGameEnded()){
-                if (!boardFull()) System.out.println("Computer won!");
-                break;
-            }
+            if (checkGameEnded(computer)) break;
         }
         scanner.close();
     }
@@ -67,10 +60,10 @@ public class TTT {
         try{
             Integer move = null;
             do {
-                if (move != null){
-                    System.out.println("That is not a valid number. Try again please.");
-                }
                 if (player.isHumanPlayer()){
+                    if (move != null){
+                        System.out.println("That is not a valid number. Try again please.");
+                    }
                     System.out.println("What is your move? [1-9]");
                     move = Integer.parseInt(scanner.next());
                 }
@@ -96,8 +89,13 @@ public class TTT {
          !"X".equals(board[move-1]) && !"O".equals(board[move-1]);
     }
 
-    private boolean checkGameEnded() {
-        return boardFull() || winnerHorizontally() || winnerVertically() || winnerDiagonally();
+    private boolean checkGameEnded(Player player) {
+        if (winnerHorizontally() || winnerVertically() || winnerDiagonally()){
+            if (player.isHumanPlayer()) System.out.println("Player won!");
+            else System.out.println("Computer won!");
+            return true;
+        }
+        return boardFull();
     }
 
     private boolean winnerHorizontally() {
@@ -118,8 +116,8 @@ public class TTT {
     }
 
     private boolean boardFull(){
-        for (String sign : board){
-            if (!"X".equals(sign) && !"O".equals(sign)){
+        for (String number : board){
+            if (!"X".equals(number) && !"O".equals(number)){
                 return false;
             }
         }
